@@ -12,6 +12,17 @@ module.exports.findOneJoke = (req,res) => {
     .catch(err => res.json({message : "Something went wrong", error: err}));
 }
 
+module.exports.randomJoke = (req, res) => {
+    Joke.count().exec(function (err, count) {
+
+        // Get a random entry
+        var random = Math.floor(Math.random() * count)
+        Joke.findOne().skip(random).exec(
+          function (err, result) {
+            res.json(result) 
+          })
+      })
+}
 module.exports.createNewJoke = (req, res) => {
     Joke.create(req.body)
     .then(newJoke => res.json({joke : newJoke}))
